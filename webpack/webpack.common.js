@@ -1,3 +1,5 @@
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const copyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
@@ -11,7 +13,13 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "..", "./public/index.html"),
         }),
-        // new CleanWebpackPlugin(),
+        new copyWebpackPlugin({
+            patterns: [
+                { from: "src/assets", to: "assets" },
+                { from: "public/html", to: "html" },
+            ],
+        }),
+        new CleanWebpackPlugin(),
     ],
 
     module: {
@@ -31,7 +39,7 @@ module.exports = {
             },
             {
                 test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                use: "url-loader?limit=100000",
+                use: "asset",
             },
         ],
     },
